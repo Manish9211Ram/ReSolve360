@@ -1,0 +1,72 @@
+@model GrievanceRedressal.Models.User
+@{
+    ViewData["Title"] = Localizer["SettingsTitle"];
+}
+
+<div class="row justify-content-center mt-5 mb-5 animate-slide-in-right">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-lg p-4" style="border-radius: 20px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="bg-primary d-inline-block p-3 rounded-circle shadow mb-3">
+                        <i class="bi bi-gear-fill text-white fs-2"></i>
+                    </div>
+                    <h3 class="fw-bold text-white">@Localizer["AccountSettings"]</h3>
+                    <p class="text-white opacity-50 small">@Localizer["SettingsSubtitle"]</p>
+                </div>
+
+                @if (ViewBag.Message != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i> @ViewBag.Message
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <form asp-action="UpdateSettings" method="post">
+                    <div class="mb-3">
+                        <label class="form-label text-white small">@Localizer["NameLabel"]</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-light border-opacity-25 text-white opacity-50"><i class="bi bi-person"></i></span>
+                            <input type="text" name="name" class="form-control bg-transparent text-white border-light border-opacity-25 shadow-none" value="@(Model?.Name)" required />
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-white small">@Localizer["EmailLabel"]</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-light border-opacity-25 text-white opacity-50"><i class="bi bi-envelope"></i></span>
+                            <input type="email" class="form-control bg-transparent text-white border-light border-opacity-25 shadow-none opacity-50" value="@(Model?.Email)" readonly />
+                        </div>
+                        <small class="text-muted fst-italic">@Localizer["EmailNote"]</small>
+                    </div>
+
+                    <hr class="border-light border-opacity-10 my-4" />
+                    <h6 class="text-white opacity-75 mb-3 fw-bold"><i class="bi bi-shield-lock me-2"></i> @Localizer["Security"]</h6>
+
+                    <div class="mb-3">
+                        <label class="form-label text-white small">@Localizer["NewPasswordLabel"]</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-light border-opacity-25 text-white opacity-50"><i class="bi bi-key"></i></span>
+                            <input type="password" name="newPassword" class="form-control bg-transparent text-white border-light border-opacity-25 shadow-none" placeholder="@Localizer["NewPasswordPlaceholder"]" />
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-white small">@Localizer["ConfirmPasswordLabel"]</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-light border-opacity-25 text-white opacity-50"><i class="bi bi-check2-circle"></i></span>
+                            <input type="password" name="currentPassword" class="form-control bg-transparent text-white border-light border-opacity-25 shadow-none" placeholder="@Localizer["ConfirmPasswordPlaceholder"]" />
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-primary rounded-pill py-2 shadow-sm hover-scale">
+                            <i class="bi bi-save me-2"></i> @Localizer["SaveChanges"]
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

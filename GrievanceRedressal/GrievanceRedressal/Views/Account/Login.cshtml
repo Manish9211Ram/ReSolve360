@@ -1,0 +1,239 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Authentication"];
+    Layout = "_Layout";
+}
+
+<style>
+    .form-container {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        transition: all 0.6s ease-in-out;
+    }
+
+    .sign-in-container {
+        left: 0;
+        width: 50%;
+        z-index: 2;
+    }
+
+    .sign-up-container {
+        left: 0;
+        width: 50%;
+        opacity: 0;
+        z-index: 1;
+    }
+
+    .x-container.active .sign-in-container {
+        transform: translateX(100%);
+        opacity: 0;
+        z-index: 1;
+    }
+
+    .x-container.active .sign-up-container {
+        transform: translateX(100%);
+        opacity: 1;
+        z-index: 5;
+        animation: show 0.6s;
+    }
+
+    @@keyframes show {
+        0%, 49.99% { opacity: 0; z-index: 1; }
+        50%, 100% { opacity: 1; z-index: 5; }
+    }
+
+    .overlay-container {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 50%;
+        height: 100%;
+        overflow: hidden;
+        transition: transform 0.6s ease-in-out;
+        z-index: 100;
+    }
+
+    .x-container.active .overlay-container {
+        transform: translateX(-100%);
+    }
+
+    .main-animated-bg {
+        background: linear-gradient(-45deg, #050510, #1a1a2e, #16213e, #0f3460);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+
+    @@keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .overlay {
+        background: linear-gradient(-45deg, var(--accent-red), var(--accent-pink));
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 0 0;
+        color: #fff;
+        position: relative;
+        left: -100%;
+        height: 100%;
+        width: 200%;
+        transform: translateX(0);
+        transition: transform 0.6s ease-in-out;
+    }
+
+    /* Angle clip paths to match the user's images precisely */
+    .overlay-left {
+        clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
+    }
+
+    .overlay-right {
+        clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%);
+    }
+
+    .x-container.active .overlay {
+        transform: translateX(50%);
+    }
+
+    .overlay-panel {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 60px; /* Increased padding */
+        text-align: center;
+        top: 0;
+        height: 100%;
+        width: 50%;
+        transform: translateX(0);
+        transition: transform 0.6s ease-in-out;
+    }
+
+    .overlay-left {
+        padding-right: 90px; /* Protect text from clip-path */
+        transform: translateX(-20%);
+    }
+
+    .x-container.active .overlay-left {
+        transform: translateX(0);
+    }
+
+    .overlay-right {
+        padding-left: 90px; /* Protect text from clip-path */
+        right: 0;
+        transform: translateX(0);
+    }
+
+    .x-container.active .overlay-right {
+        transform: translateX(20%);
+    }
+</style>
+
+<div class="auth-wrapper">
+    <div class="x-container shadow-lg" id="x-container">
+        
+        <!-- Registration Form (Hidden Initially) -->
+        <div class="form-container sign-up-container">
+            <form asp-controller="Account" asp-action="Register" method="post" class="x-form">
+                <h1>@Localizer["Register"]</h1>
+                @if (ViewBag.RegisterError != null)
+                {
+                    <div class="alert alert-danger py-1" style="font-size: 0.8rem;">@ViewBag.RegisterError</div>
+                }
+                <div class="x-input-group">
+                    <input type="text" name="name" class="x-input" placeholder="@Localizer["FullName"]" required 
+                           minlength="2" pattern="[a-zA-Z\s]+" title="Please enter a valid name (letters and spaces only)"/>
+                    <i class="bi bi-person text-white"></i>
+                </div>
+                <div class="x-input-group">
+                    <input type="email" name="email" class="x-input" placeholder="@Localizer["UserEmail"]" required 
+                           pattern="[a-z0-9._%+-]+@@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email (e.g. user@@example.com)"/>
+                    <i class="bi bi-envelope text-white"></i>
+                </div>
+                <div class="x-input-group">
+                    <input type="password" name="password" class="x-input" placeholder="@Localizer["Password"]" required minlength="6" />
+                    <i class="bi bi-lock text-white"></i>
+                </div>
+                <input type="hidden" name="role" value="User" />
+
+                <button class="x-btn shadow" type="submit">@Localizer["RegisterButton"]</button>
+                <div class="switch-text">@Localizer["AlreadyHaveAccount"] <a onclick="toggleForm()">@Localizer["SignIn"]</a></div>
+            </form>
+        </div>
+
+        <!-- Login Form -->
+        <div class="form-container sign-in-container">
+            <form asp-controller="Account" asp-action="Login" method="post" class="x-form">
+                <h1>@Localizer["Login"]</h1>
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger py-1" style="font-size: 0.8rem;">@ViewBag.Error</div>
+                }
+                
+                <div class="x-input-group mt-4">
+                    <input type="email" name="email" class="x-input" placeholder="@Localizer["UserEmail"]" required />
+                    <i class="bi bi-person text-white"></i>
+                </div>
+                
+                <div class="x-input-group mt-3">
+                    <input type="password" name="password" class="x-input" placeholder="@Localizer["Password"]" required />
+                    <i class="bi bi-lock text-white"></i>
+                </div>
+                
+                <div class="text-end mt-1">
+                    <a asp-controller="Account" asp-action="ForgotPassword" class="text-white opacity-75 small">@Localizer["ForgotPass"]</a>
+                </div>
+                
+                <button class="x-btn shadow mt-4" type="submit">@Localizer["LoginButton"]</button>
+                <div class="switch-text">@Localizer["NoAccount"] <a onclick="toggleForm()">@Localizer["SignUp"]</a></div>
+            </form>
+        </div>
+
+        <!-- The Sliding Color Overlay -->
+        <div class="overlay-container d-none d-lg-block">
+            <div class="overlay">
+
+
+                <!-- Left Overlay Panel (Shows when Sign-Up is Active) -->
+                <div class="overlay-panel overlay-left">
+                    <h1 class="fw-bold mb-3 display-5">@Localizer["NewHereTitle"]</h1>
+                    <p class="opacity-75">@Localizer["NewHereSubtitle"]</p>
+                </div>
+                
+                <!-- Right Overlay Panel (Shows when Login is Active) -->
+                <div class="overlay-panel overlay-right">
+                    <h1 class="fw-bold mb-3 display-5">@Localizer["WelcomeBackTitle"]</h1>
+                    <p class="opacity-75">@Localizer["WelcomeBackSubtitle"]</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleForm() {
+            var container = document.getElementById('x-container');
+            container.classList.toggle('active');
+        }
+
+        // If the URL has #register OR if there is a registration error, open the register slide automatically
+        if (window.location.hash === '#register' || '@ViewBag.RegisterError' !== '') {
+            document.getElementById('x-container').classList.add('active');
+        }
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AnalyticsTitle" xml:space="preserve">
+    <value>Resolve360 Analytics</value>
+  </data>
+  <data name="AnalyticsSubtitle" xml:space="preserve">
+    <value>Operational Intelligence &amp; System Oversight</value>
+  </data>
+  <data name="GenerateReportPDF" xml:space="preserve">
+    <value>Generate Report PDF</value>
+  </data>
+  <data name="TotalRequests" xml:space="preserve">
+    <value>Total Requests</value>
+  </data>
+  <data name="InProgress" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
+  <data name="Resolved" xml:space="preserve">
+    <value>Resolved</value>
+  </data>
+  <data name="OpenIssuesCount" xml:space="preserve">
+    <value>Open Issues</value>
+  </data>
+  <data name="LiveStatus" xml:space="preserve">
+    <value>Live</value>
+  </data>
+  <data name="ActiveStatus" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="SuccessStatus" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="ImmediateStatus" xml:space="preserve">
+    <value>Immediate</value>
+  </data>
+  <data name="RecentComplaints" xml:space="preserve">
+    <value>Recent Complaints</value>
+  </data>
+  <data name="ViewAll" xml:space="preserve">
+    <value>View All</value>
+  </data>
+  <data name="TicketID" xml:space="preserve">
+    <value>Ticket ID</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Manage" xml:space="preserve">
+    <value>Manage</value>
+  </data>
+  <data name="AiInsightsTitle" xml:space="preserve">
+    <value>AI Strategic Insights</value>
+  </data>
+  <data name="AiInsightsSubtitle" xml:space="preserve">
+    <value>Intelligent Trend Prediction</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="Forecast" xml:space="preserve">
+    <value>Forecast</value>
+  </data>
+  <data name="DataDrivenModel" xml:space="preserve">
+    <value>Data-driven accuracy model</value>
+  </data>
+  <data name="NoComplaintsFound" xml:space="preserve">
+    <value>No recent complaints found.</value>
+  </data>
+  <data name="AdminDashboard" xml:space="preserve">
+    <value>Admin Dashboard</value>
+  </data>
+  <data name="RisingTrend" xml:space="preserve">
+    <value>Rising Trend</value>
+  </data>
+  <data name="DecliningTrend" xml:space="preserve">
+    <value>Declining Trend</value>
+  </data>
+  <data name="Technical" xml:space="preserve">
+    <value>Technical</value>
+  </data>
+  <data name="Hostel" xml:space="preserve">
+    <value>Hostel</value>
+  </data>
+  <data name="Academic" xml:space="preserve">
+    <value>Academic</value>
+  </data>
+  <data name="SecurityCategory" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="OpenStatus" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="InProgressStatus" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
+  <data name="ResolvedStatus" xml:space="preserve">
+    <value>Resolved</value>
+  </data>
+</root>

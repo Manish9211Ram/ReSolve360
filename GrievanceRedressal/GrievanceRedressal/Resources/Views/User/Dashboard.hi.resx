@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WelcomeBack" xml:space="preserve">
+    <value>वापसी पर स्वागत है</value>
+  </data>
+  <data name="DashboardSubtitle" xml:space="preserve">
+    <value>अपनी शिकायतों को प्रबंधित करें और प्रगति को ट्रैक करें।</value>
+  </data>
+  <data name="NewGrievance" xml:space="preserve">
+    <value>नई शिकायत</value>
+  </data>
+  <data name="TotalRequests" xml:space="preserve">
+    <value>कुल शिकायतें</value>
+  </data>
+  <data name="InProgress" xml:space="preserve">
+    <value>प्रगति पर है</value>
+  </data>
+  <data name="Resolved" xml:space="preserve">
+    <value>समाधान हो गया</value>
+  </data>
+  <data name="Escalated" xml:space="preserve">
+    <value>बढ़ाया गया</value>
+  </data>
+  <data name="RecentComplaints" xml:space="preserve">
+    <value>हाल की शिकायतें</value>
+  </data>
+  <data name="ViewAll" xml:space="preserve">
+    <value>सभी देखें</value>
+  </data>
+  <data name="TicketID" xml:space="preserve">
+    <value>टिकट आईडी</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>विषय</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>स्थिति</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>दिनांक</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>कार्य</value>
+  </data>
+  <data name="OpenStatus" xml:space="preserve">
+    <value>खुला</value>
+  </data>
+  <data name="InProgressStatus" xml:space="preserve">
+    <value>प्रगति पर है</value>
+  </data>
+  <data name="ResolvedStatus" xml:space="preserve">
+    <value>समाधान हो गया</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>देखें</value>
+  </data>
+  <data name="ResolvedCount" xml:space="preserve">
+    <value>समाधान हो गया</value>
+  </data>
+  <data name="ViewHistory" xml:space="preserve">
+    <value>इतिहास देखें</value>
+  </data>
+  <data name="SubjectDescription" xml:space="preserve">
+    <value>विषय और विवरण</value>
+  </data>
+  <data name="StatusCondition" xml:space="preserve">
+    <value>स्थिति की स्थिति</value>
+  </data>
+  <data name="SubmissionDate" xml:space="preserve">
+    <value>जमा करने की तारीख</value>
+  </data>
+  <data name="ActiveInteraction" xml:space="preserve">
+    <value>सक्रिय बातचीत</value>
+  </data>
+  <data name="ViewDetails" xml:space="preserve">
+    <value>विवरण देखें</value>
+  </data>
+  <data name="NoComplaintsYet" xml:space="preserve">
+    <value>आपने अभी तक कोई शिकायत दर्ज नहीं की है।</value>
+  </data>
+  <data name="SystemStatus" xml:space="preserve">
+    <value>सिस्टम स्थिति</value>
+  </data>
+  <data name="SystemLive" xml:space="preserve">
+    <value>लाइव</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>डैशबोर्ड</value>
+  </data>
+</root>

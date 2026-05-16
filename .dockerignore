@@ -1,0 +1,11 @@
+**/.vs/
+**/bin/
+**/obj/
+**/out/
+.git/
+.vscode/
+Dockerfile
+docker-compose*
+*.txt
+*.sql
+*.md

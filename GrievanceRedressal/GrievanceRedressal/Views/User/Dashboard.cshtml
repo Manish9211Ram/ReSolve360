@@ -1,0 +1,224 @@
+@{
+    ViewData["Title"] = Localizer["Dashboard"];
+    var userGrievances = (IEnumerable<GrievanceRedressal.Models.Grievance>)ViewBag.Grievances;
+}
+
+<style>
+    :root {
+        --glass-bg: rgba(255, 255, 255, 0.05);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --accent-blue: #00d2ff;
+        --accent-purple: #9d50bb;
+        --accent-green: #00f260;
+        --accent-red: #ff512f;
+    }
+
+    body {
+        background: radial-gradient(circle at top left, #1a1a2e, #16213e, #0f3460);
+        color: #e6e6e6;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .glass-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .hover-glow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 210, 255, 0.15);
+    }
+
+    .stat-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin: 0 auto 1.5rem;
+        border: 2px solid rgba(255,255,255,0.1);
+    }
+
+    .bg-blue-tint { background: rgba(0, 210, 255, 0.1); color: var(--accent-blue); }
+    .bg-purple-tint { background: rgba(157, 80, 187, 0.1); color: var(--accent-purple); }
+    .bg-green-tint { background: rgba(0, 242, 96, 0.1); color: var(--accent-green); }
+
+    .custom-table {
+        background: rgba(0, 0, 0, 0.2) !important;
+        border-radius: 15px !important;
+        overflow: hidden;
+    }
+
+    .custom-table th {
+        background: rgba(255, 255, 255, 0.03);
+        color: #aaa;
+        font-weight: 500;
+        letter-spacing: 1px;
+        border: none !important;
+        padding: 1.2rem !important;
+    }
+
+    .custom-table td {
+        background: transparent !important;
+        color: #e6e6e6;
+        vertical-align: middle;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        padding: 1.2rem !important;
+    }
+
+    .status-badge {
+        padding: 6px 16px;
+        border-radius: 30px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .badge-open { background: rgba(0, 210, 255, 0.15); color: #00d2ff; border: 1px solid rgba(0, 210, 255, 0.3); }
+    .badge-progress { background: rgba(157, 80, 187, 0.15); color: #9d50bb; border: 1px solid rgba(157, 80, 187, 0.3); }
+    .badge-resolved { background: rgba(0, 242, 96, 0.15); color: #00f260; border: 1px solid rgba(0, 242, 96, 0.3); }
+
+    .btn-view {
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 6px 15px;
+        font-size: 0.85rem;
+        transition: 0.2s;
+    }
+
+    .btn-view:hover {
+        background: white;
+        color: #1a1a2e;
+    }
+
+    .welcome-text {
+        font-family: 'Righteous', sans-serif;
+        text-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+    }
+</style>
+
+<div class="container-fluid px-4 py-3 animate-fade-in">
+    <!-- Header Section -->
+    <div class="row align-items-center mb-5 mt-4">
+        <div class="col-md-8">
+            <h1 class="welcome-text fw-bold mb-1">
+                @Localizer["WelcomeBack"], <span class="text-info">@User.Identity?.Name</span>!
+            </h1>
+            <p class="text-white-50 opacity-75">@Localizer["DashboardSubtitle"]</p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <a href="/User/RaiseGrievance" class="btn btn-info rounded-pill px-4 py-2 fw-bold shadow-glow-blue">
+                <i class="bi bi-plus-circle me-2"></i> @Localizer["NewGrievance"]
+            </a>
+        </div>
+    </div>
+
+    <!-- Live Stats -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <a href="/User/MyGrievances" class="text-decoration-none d-block">
+                <div class="card glass-card hover-glow p-4 text-center border-0">
+                    <div class="stat-circle bg-blue-tint"><i class="bi bi-folder2-open"></i></div>
+                    <h6 class="text-white-50 text-uppercase small ls-2 mb-2">@Localizer["TotalRequests"]</h6>
+                    <h1 class="display-5 fw-bold mb-0">@(ViewBag.TotalCount?.ToString("D2") ?? "00")</h1>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/User/MyGrievances?statusId=2" class="text-decoration-none d-block">
+                <div class="card glass-card hover-glow p-4 text-center border-0 border-top border-warning border-4">
+                    <div class="stat-circle bg-purple-tint"><i class="bi bi-hourglass-split"></i></div>
+                    <h6 class="text-white-50 text-uppercase small ls-2 mb-2">@Localizer["InProgress"]</h6>
+                    <h1 class="display-5 fw-bold mb-0 text-warning">@(ViewBag.InProgressCount?.ToString("D2") ?? "00")</h1>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/User/MyGrievances?statusId=3" class="text-decoration-none d-block">
+                <div class="card glass-card hover-glow p-4 text-center border-0 border-top border-success border-4">
+                    <div class="stat-circle bg-green-tint"><i class="bi bi-shield-check"></i></div>
+                    <h6 class="text-white-50 text-uppercase small ls-2 mb-2">@Localizer["ResolvedCount"]</h6>
+                    <h1 class="display-5 fw-bold mb-0 text-success">@(ViewBag.ResolvedCount?.ToString("D2") ?? "00")</h1>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Table Panel -->
+    <div class="card glass-card border-0 shadow-lg p-0 overflow-hidden">
+        <div class="card-header bg-transparent border-white border-opacity-10 py-4 px-4 d-flex justify-content-between align-items-center">
+            <h4 class="fw-bold mb-0"><i class="bi bi-list-stars me-2 text-info"></i> @Localizer["RecentComplaints"]</h4>
+            <a href="/User/MyGrievances" class="btn btn-outline-light btn-sm rounded-pill px-3 opacity-75">@Localizer["ViewHistory"]</a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table custom-table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">@Localizer["TicketID"]</th>
+                            <th>@Localizer["SubjectDescription"]</th>
+                            <th>@Localizer["StatusCondition"]</th>
+                            <th>@Localizer["SubmissionDate"]</th>
+                            <th class="text-center">@Localizer["ActiveInteraction"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (userGrievances != null && userGrievances.Any())
+                        {
+                            @foreach (var g in userGrievances)
+                            {
+                                <tr>
+                                    <td class="ps-4 font-monospace text-info">#GR-@g.GrievanceId</td>
+                                    <td>
+                                        <div class="fw-bold">@g.Title</div>
+                                        <div class="small text-white-50 opacity-50 text-truncate" style="max-width: 300px;">@g.Description</div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge @(g.StatusId == 1 ? "badge-open" : g.StatusId == 2 ? "badge-progress" : "badge-resolved")">
+                                            @(g.StatusId == 1 ? Localizer["OpenStatus"] : g.StatusId == 2 ? Localizer["InProgressStatus"] : Localizer["ResolvedStatus"])
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="small">@g.CreatedAt.ToString("dd MMM yyyy")</div>
+                                        <div class="text-white-50" style="font-size: 0.7rem;">@g.CreatedAt.ToString("t")</div>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="/User/GrievanceDetails/@g.GrievanceId" class="btn-view text-decoration-none shadow-sm">
+                                            <i class="bi bi-lightning-fill me-1"></i> @Localizer["ViewDetails"]
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-white-50">
+                                    <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
+                                    @Localizer["NoComplaintsYet"]
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-transparent border-top border-white border-opacity-10 py-3 px-4 d-flex justify-content-between align-items-center">
+            <span class="small text-white-50">@Localizer["SystemStatus"]: <span class="text-success"><i class="bi bi-record-circle-fill me-1"></i> @Localizer["SystemLive"]</span></span>
+            <div class="d-flex gap-4">
+                <div class="small"><span class="text-info">●</span> @Localizer["OpenStatus"]</div>
+                <div class="small"><span class="text-warning">●</span> @Localizer["InProgressStatus"]</div>
+                <div class="small"><span class="text-success">●</span> @Localizer["ResolvedStatus"]</div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

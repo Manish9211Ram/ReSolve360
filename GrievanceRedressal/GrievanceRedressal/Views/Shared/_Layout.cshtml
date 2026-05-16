@@ -1,0 +1,482 @@
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+@inject IViewLocalizer Localizer
+@inject IOptions<Microsoft.AspNetCore.Builder.RequestLocalizationOptions> LocOptions
+@{
+}
+@{
+    var currentCulture = Context.Features.Get<IRequestCultureFeature>()?.RequestCulture.UICulture.Name ?? "en";
+}
+<!DOCTYPE html>
+<html lang="@currentCulture">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Resolve360</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* 1. Global Animated Background */
+        @@keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .main-animated-bg {
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0575E6);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* 2. Professional Glass Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.03) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 0;
+            transition: all 0.4s;
+        }
+
+        .navbar-brand {
+            font-family: 'Righteous', sans-serif;
+            color: #ffffff !important;
+            font-size: 1.6rem;
+            text-shadow: 0 0 10px rgba(5, 117, 230, 0.5);
+        }
+
+        .brand-logo {
+            height: 38px;
+            transition: transform 0.3s;
+        }
+
+            .brand-logo:hover {
+                transform: scale(1.1) rotate(5deg);
+            }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7) !important;
+            margin: 0 10px;
+            position: relative;
+        }
+
+            .nav-link:hover, .nav-link.active {
+                color: #00f2fe !important;
+            }
+
+                /* Active link glow line */
+                .nav-link.active::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -5px;
+                    left: 0;
+                    width: 100%;
+                    height: 2px;
+                    background: #00f2fe;
+                    box-shadow: 0 0 10px #00f2fe;
+                }
+
+        /* 3. Notification Toast Container */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .custom-toast {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 12px;
+            padding: 15px 25px;
+            margin-bottom: 10px;
+            display: none; /* Initially hidden */
+            animation: slideIn 0.5s forwards;
+        }
+
+        @@keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* 5. Custom Slide-In Animation for Login/Register */
+        .animate-slide-in-right {
+            animation: slideInRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            opacity: 0;
+            animation-delay: 0.2s;
+        }
+
+        @@keyframes slideInRight {
+            from {
+                transform: translateX(40px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* 4. Footer Styling */
+        footer {
+            background: rgba(0, 0, 0, 0.3) !important;
+            backdrop-filter: blur(10px);
+            color: rgba(255, 255, 255, 0.5) !important;
+            font-size: 0.9rem;
+        }
+        .dropdown-item:hover, .dropdown-item:focus {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: #fff !important;
+        }
+
+        .dropdown-item.active, .dropdown-item:active {
+            background-color: var(--accent-red) !important;
+            color: #fff !important;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <div class="main-animated-bg">
+        <div id="particles-js" style="width: 100%; height: 100%;"></div>
+    </div>
+
+    <div class="toast-container" id="toastBox"></div>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+            <div class="container">
+                <div class="navbar-brand d-flex align-items-center" style="cursor: default;">
+                    <img src="/images/mylogo.png" alt="Logo" class="brand-logo me-2" />
+                    Resolve360
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                    <span class="bi bi-grid-3x3-gap-fill text-white fs-2"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        @if (User.Identity?.IsAuthenticated == true && User.Claims.Any(c => c.Type == System.Security.Claims.ClaimTypes.Role && c.Value == "Admin"))
+                        {
+                            <li class="nav-item"><a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" href="/Admin/Index"><i class="bi bi-pie-chart me-1"></i> @Localizer["Analytics"]</a></li>
+                            <li class="nav-item"><a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "ManageGrievances" ? "active" : "")" href="/Admin/ManageGrievances"><i class="bi bi-shield-check me-1"></i> @Localizer["Complaints"]</a></li>
+                        }
+                        else if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item"><a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Dashboard" ? "active" : "")" href="/User/Dashboard"><i class="bi bi-house-door me-1"></i> @Localizer["Dashboard"]</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/User/RaiseGrievance"><i class="bi bi-pencil-square me-1"></i> @Localizer["RaiseGrievance"]</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/User/MyGrievances"><i class="bi bi-card-list me-1"></i> @Localizer["MyGrievances"]</a></li>
+                        }
+                    </ul>
+
+                    <div class="dropdown me-3">
+                        @{
+                            var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+                        }
+                        <button class="btn btn-outline-light btn-sm dropdown-toggle rounded-pill px-3 shadow-none overflow-hidden" type="button" data-bs-toggle="dropdown" style="border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05);">
+                            <i class="bi bi-translate me-1 text-info"></i>
+                            <span class="small fw-medium">@(requestCulture?.RequestCulture.UICulture.Name.StartsWith("hi") == true ? "हिन्दी" : requestCulture?.RequestCulture.UICulture.Name.StartsWith("or") == true ? "ଓଡ଼ିଆ" : "English")</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end bg-dark border-secondary shadow-lg mt-2 animate-slide-in-right" style="min-width: 150px; border-radius: 12px;">
+                            <li>
+                                <form asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)" method="post" class="dropdown-item p-0">
+                                    <input type="hidden" name="culture" value="en" />
+                                    <button type="submit" class="btn btn-link text-white text-decoration-none small w-100 text-start px-3 py-2 hover-lift">
+                                        🇺🇸 English
+                                    </button>
+                                </form>
+                            </li>
+                            <li>
+                                <form asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)" method="post" class="dropdown-item p-0">
+                                    <input type="hidden" name="culture" value="hi" />
+                                    <button type="submit" class="btn btn-link text-white text-decoration-none small w-100 text-start px-3 py-2 hover-lift">
+                                        🇮🇳 हिन्दी
+                                    </button>
+                                </form>
+                            </li>
+                            <li>
+                                <form asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)" method="post" class="dropdown-item p-0">
+                                    <input type="hidden" name="culture" value="or" />
+                                    <button type="submit" class="btn btn-link text-white text-decoration-none small w-100 text-start px-3 py-2 hover-lift">
+                                        🇮🇳 ଓଡ଼ିଆ
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                        
+                    @if (User.Identity?.IsAuthenticated == true && !string.IsNullOrEmpty(User.Identity.Name))
+                    {
+                        <div class="dropdown">
+                            <div class="user-tag d-flex align-items-center shadow-sm cursor-pointer" data-bs-toggle="dropdown" style="cursor: pointer;">
+                                <span class="me-2 small fw-medium text-white">@User.Identity.Name</span>
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-lg"
+                                     style="width: 32px; height: 32px;">
+                                    @(User.Identity.Name?.Substring(0, 1).ToUpper() ?? "U")
+                                </div>
+                            </div>
+                            <ul class="dropdown-menu dropdown-menu-end bg-dark border-secondary shadow-lg mt-2">
+                                <li><a class="dropdown-item text-white small" href="/User/Profile"><i class="bi bi-person me-2"></i>@Localizer["Profile"]</a></li>
+                                <li><a class="dropdown-item text-white small" href="/User/Settings"><i class="bi bi-gear me-2"></i>@Localizer["Settings"]</a></li>
+                                <li><hr class="dropdown-divider bg-secondary"></li>
+                                <li><a class="dropdown-item text-danger small" href="/Account/Logout"><i class="bi bi-power me-2"></i>@Localizer["Logout"]</a></li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center animate-slide-in-right">
+                            <a href="/Account/Login" class="btn btn-outline-info btn-sm rounded-pill px-4 me-2 shadow-sm">@Localizer["Login"]</a>
+                            <a href="/Account/Login#register" class="btn btn-info btn-sm rounded-pill px-4 text-white shadow-sm">@Localizer["Register"]</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container flex-grow-1 mt-4">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer mt-auto border-top border-white border-opacity-10">
+        <div class="container text-center py-3">
+            <span>&copy; @DateTime.Now.Year - <span class="text-white fw-bold">Resolve360</span> | Smart Grievance Management System</span>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <!-- Chatbot Widget UI -->
+    <div class="chatbot-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+        <button class="btn btn-info rounded-circle shadow-lg" id="chatBtn" style="width: 60px; height: 60px; font-size: 1.5rem; color: white;" onclick="toggleChat()">
+            <i class="bi bi-chat-dots-fill"></i>
+        </button>
+        <div id="chatWindow" class="card shadow-lg d-none glass-card" style="position: absolute; bottom: 70px; right: 0; width: 320px; border-radius: 15px; overflow: hidden; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px);">
+            <div class="card-header bg-info text-white fw-bold d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-robot me-2"></i> ResolveBot</span>
+                <i class="bi bi-x-lg cursor-pointer" onclick="toggleChat()" style="cursor:pointer"></i>
+            </div>
+            <div class="card-body p-3" id="chatBody" style="height: 250px; overflow-y: auto;">
+                <div class="mb-2 w-75 p-2 bg-info text-white rounded shadow-sm small">
+                    @Localizer["ChatbotGreeting"]
+                </div>
+            </div>
+            <div class="card-footer p-2 bg-transparent border-top border-light border-opacity-10 d-flex">
+                <input type="text" id="chatInput" class="form-control form-control-sm bg-transparent text-white border-light shadow-none" placeholder="@Localizer["ChatbotInputPlaceholder"]" onkeydown="if(event.key === 'Enter') sendMsg()">
+                <button class="btn btn-sm btn-info ms-2 text-white" onclick="sendMsg()"><i class="bi bi-send"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Fallback for Localization (if @Localizer fails to find keys)
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentCulture = '@(Context.Features.Get<IRequestCultureFeature>()?.RequestCulture.UICulture.Name ?? "en")';
+            const greetingElem = document.querySelector('#chatBody div');
+            const inputElem = document.getElementById('chatInput');
+
+            // Diagnostics and fallback for Chatbot Greeting
+            if (greetingElem && (greetingElem.innerText.includes('ChatbotGreeting') || !greetingElem.innerText.trim())) {
+                if (currentCulture.startsWith('hi')) greetingElem.innerText = "नमस्ते! अपनी समस्या बताइये, मैं आपको सही श्रेणी में भेजने में मदद करूँगा।";
+                else if (currentCulture.startsWith('or')) greetingElem.innerText = "ନମସ୍କାର! ଆପଣଙ୍କର ସମସ୍ୟା କୁହନ୍ତୁ, ମୁଁ ଆପଣଙ୍କୁ ସଠିକ୍ ବର୍ଗରେ ମାର୍ଗଦର୍ଶନ କରିବି!";
+                else greetingElem.innerText = "Hi! Tell me your problem, I will guide you to the right category!";
+            }
+            // Diagnostics and fallback for Chatbot Input Placeholder
+            if (inputElem && (inputElem.placeholder.includes('ChatbotInputPlaceholder') || !inputElem.placeholder.trim())) {
+                if (currentCulture.startsWith('hi')) inputElem.placeholder = "उदा. मेरा मॉनिटर काम नहीं कर रहा है...";
+                else if (currentCulture.startsWith('or')) inputElem.placeholder = "ଯଥା: ମୋର ମନିଟର୍ କାମ କରୁନାହିଁ...";
+                else inputElem.placeholder = "E.g. My monitor is not working...";
+            }
+        });
+
+        // Force unregister Service Worker to clear corrupted PWA cache
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+
+        // Chatbot logic with logging
+        let botHasGreeted = false;
+        let chatSessionId = 'session-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now();
+        
+        function speakBot(text) {
+            if (!('speechSynthesis' in window)) return;
+            
+            // Ensure voices are loaded before speaking
+            const doSpeak = () => {
+                window.speechSynthesis.cancel(); 
+                var currentCulture = '@(Context.Features.Get<IRequestCultureFeature>()?.RequestCulture.UICulture.Name ?? "en")';
+                let utterance = new SpeechSynthesisUtterance(text);
+                let targetLang = currentCulture.startsWith('hi') ? 'hi-IN' : (currentCulture.startsWith('or') ? 'or-IN' : 'en-US');
+                utterance.lang = targetLang;
+
+                let voices = window.speechSynthesis.getVoices();
+                let voice = voices.find(v => v.lang === targetLang) || voices.find(v => v.lang.startsWith(targetLang.split('-')[0]));
+                
+                // Fallback for Odia to Hindi if missing
+                if (!voice && targetLang === 'or-IN') {
+                    voice = voices.find(v => v.lang === 'hi-IN') || voices.find(v => v.lang.startsWith('hi'));
+                }
+
+                if (voice) utterance.voice = voice;
+                utterance.rate = 0.95;
+                utterance.pitch = 1.0;
+                window.speechSynthesis.speak(utterance);
+            };
+
+            if (window.speechSynthesis.getVoices().length === 0) {
+                window.speechSynthesis.onvoiceschanged = doSpeak;
+            } else {
+                doSpeak();
+            }
+        }
+
+        function toggleChat() {
+            let chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('d-none');
+            
+            if(!chatWindow.classList.contains('d-none') && !botHasGreeted) {
+                botHasGreeted = true;
+                // Get the text from the first message bubble
+                var greetingElem = document.querySelector('#chatBody .mb-2');
+                if (greetingElem) {
+                    setTimeout(() => speakBot(greetingElem.innerText.trim()), 800);
+                }
+            }
+        }
+
+        async function logInteraction(msg, reply) {
+            try {
+                const formData = new FormData();
+                formData.append('sessionId', chatSessionId);
+                formData.append('message', msg);
+                formData.append('response', reply);
+
+                await fetch('/Home/LogChatbot', {
+                    method: 'POST',
+                    body: formData
+                });
+            } catch (e) { console.error("Logging failed", e); }
+        }
+
+        function sendMsg() {
+            var input = document.getElementById('chatInput');
+            var msg = input.value.trim();
+            if(!msg) return;
+
+            var body = document.getElementById('chatBody');
+            body.innerHTML += `<div class="mb-2 w-75 p-2 bg-primary text-white rounded shadow-sm small ms-auto text-end">${msg}</div>`;
+            input.value = '';
+            body.scrollTop = body.scrollHeight; 
+
+            // Show Typing Indicator
+            let typingId = "typing-" + Date.now();
+            let typingText = "bot is typing...";
+            var currentCulture = '@(Context.Features.Get<IRequestCultureFeature>()?.RequestCulture.UICulture.Name ?? "en")';
+            if (currentCulture.startsWith('hi')) typingText = "ResolveBot टाइप कर रहा है...";
+            else if (currentCulture.startsWith('or')) typingText = "ResolveBot ଟାଇପ୍ କରୁଛି...";
+
+            body.innerHTML += `<div id="${typingId}" class="mb-2 w-75 p-2 bg-info text-white rounded shadow-sm small opacity-75">
+                <i class="bi bi-robot"></i> <i>${typingText}</i>
+            </div>`;
+            body.scrollTop = body.scrollHeight; 
+
+            // Call Server-side Groq AI (Absolute root path)
+            fetch('/Home/GetChatResponse', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `message=${encodeURIComponent(msg)}&culture=${encodeURIComponent(currentCulture)}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                let typingElem = document.getElementById(typingId);
+                if (typingElem) typingElem.remove();
+
+                let reply = data.reply || "I am sorry, I couldn't process that.";
+                
+                body.innerHTML += `<div class="mb-2 w-75 p-2 bg-info text-white rounded shadow-sm small">${reply}</div>`;
+                body.scrollTop = body.scrollHeight;
+                speakBot(reply.replace(/<[^>]*>?/gm, ''));
+
+                // LOG TO DB
+                logInteraction(msg, reply);
+            })
+            .catch(() => {
+                let typingElem = document.getElementById(typingId);
+                if (typingElem) typingElem.remove();
+                
+                let reply = "Error connecting to ResolveBot server.";
+                body.innerHTML += `<div class="mb-2 w-75 p-2 bg-info text-white rounded shadow-sm small">${reply}</div>`;
+                body.scrollTop = body.scrollHeight;
+            });
+        }
+
+
+        // Particles Background Config
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "opacity": { "value": 0.15 },
+                "size": { "value": 2 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.05, "width": 1 },
+                "move": { "enable": true, "speed": 1, "out_mode": "out" }
+            },
+            "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } },
+            "retina_detect": true
+        });
+
+        // Smart Notification Function
+        function showToast(message, type = 'info') {
+            const box = document.getElementById('toastBox');
+            const toast = document.createElement('div');
+            toast.className = `custom-toast shadow-lg`;
+            toast.innerHTML = `<i class="bi bi-info-circle-fill me-2"></i> ${message}`;
+            box.appendChild(toast);
+            $(toast).fadeIn().delay(3000).fadeOut(function() { $(this).remove(); });
+        }
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

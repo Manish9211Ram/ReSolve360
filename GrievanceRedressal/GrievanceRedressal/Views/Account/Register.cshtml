@@ -1,0 +1,123 @@
+@{
+    ViewData["Title"] = @Localizer["CreateAccount"];
+}
+
+<style>
+    /* 1. Background Color Changing Animation */
+    @@keyframes gradientBG {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .animated-bg {
+        background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0575E6);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    .hover-scale:focus {
+        transform: scale(1.02);
+        transition: 0.3s;
+        background: rgba(255, 255, 255, 0.2) !important;
+    }
+</style>
+
+<div class="animated-bg">
+    <div id="particles-js" style="width: 100%; height: 100%;"></div>
+</div>
+
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh; position: relative; z-index: 2;">
+    <div class="row justify-content-center w-100 py-5">
+        <div class="col-md-7 col-lg-5">
+            <div class="card shadow-lg border-0 p-4 animate-slide-in-right" style="border-radius: 20px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1);">
+
+                <div class="text-center mb-4">
+                    <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow" style="width: 70px; height: 70px;">
+                        <i class="bi bi-shield-check-fill fs-1"></i>
+                    </div>
+                    <h2 class="fw-bold text-white">Resolve360</h2>
+                    <p class="text-light opacity-75 small">@Localizer["SystemSubtitle"] </p>
+                </div>
+
+                <form asp-controller="Account" asp-action="Register" method="post">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold text-white">@Localizer["FullName"]</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent border-light border-end-0"><i class="bi bi-person text-white"></i></span>
+                                <input type="text" name="name" class="form-control bg-transparent text-white border-light border-start-0 hover-scale" placeholder="@Localizer["FullNamePlaceholder"]" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold text-white">@Localizer["UserID"]</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent border-light border-end-0"><i class="bi bi-card-text text-white"></i></span>
+                                <input type="text" class="form-control bg-transparent text-white border-light border-start-0 hover-scale" placeholder="12345">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-white">@Localizer["EmailAddress"]</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-light border-end-0"><i class="bi bi-envelope text-white"></i></span>
+                            <input type="email" name="email" class="form-control bg-transparent text-white border-light border-start-0 hover-scale" placeholder="@Localizer["EmailPlaceholder"]" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-white">@Localizer["CreatePassword"]</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-light border-end-0"><i class="bi bi-lock text-white"></i></span>
+                            <input type="password" name="password" class="form-control bg-transparent text-white border-light border-start-0 hover-scale" placeholder="********" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-info w-100 py-2 fw-bold shadow">
+                        @Localizer["RegisterNow"] <i class="bi bi-arrow-right-short ms-1"></i>
+                    </button>
+                </form>
+
+                <div class="mt-4 text-center">
+                    <p class="mb-0 text-light opacity-75 small">@Localizer["AlreadyHaveAccount"]</p>
+                    <a href="/Account/Login" class="fw-bold text-white text-decoration-none">@Localizer["LoginHere"]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80 },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5 },
+                "size": { "value": 3 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 2 }
+            },
+            "interactivity": {
+                "events": { "onhover": { "enable": true, "mode": "grab" } }
+            }
+        });
+    </script>
+}

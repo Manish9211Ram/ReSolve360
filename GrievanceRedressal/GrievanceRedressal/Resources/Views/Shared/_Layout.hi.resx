@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Analytics" xml:space="preserve">
+    <value>एनालिटिक्स</value>
+  </data>
+  <data name="Complaints" xml:space="preserve">
+    <value>शिकायतें</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>डैशबोर्ड</value>
+  </data>
+  <data name="RaiseGrievance" xml:space="preserve">
+    <value>शिकायत दर्ज करें</value>
+  </data>
+  <data name="MyGrievances" xml:space="preserve">
+    <value>मेरी शिकायतें</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>प्रोफ़ाइल</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>सेटिंग्स</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>लॉगआउट</value>
+  </data>
+  <data name="ChatbotGreeting" xml:space="preserve">
+    <value>नमस्ते! अपनी समस्या बताएं, मैं सही श्रेणी चुनने में आपकी सहायता करूँगा।</value>
+  </data>
+  <data name="ChatbotInputPlaceholder" xml:space="preserve">
+    <value>उदा. मेरा मॉनिटर काम नहीं कर रहा है...</value>
+  </data>
+  <data name="BotTyping" xml:space="preserve">
+    <value>ResolveBot टाइप कर रहा है...</value>
+  </data>
+  <data name="ChatbotDefaultReply" xml:space="preserve">
+    <value>मैं विशिष्ट श्रेणी का पता नहीं लगा सका। क्या आप कृपया विस्तार से बता सकते हैं, या इसे 'अन्य' के अंतर्गत उठा सकते हैं?</value>
+  </data>
+  <data name="ChatbotHelloReply" xml:space="preserve">
+    <value>नमस्ते! Resolve360 सहायता में आपका स्वागत है। कृपया मुझे उस समस्या के बारे में बताएं जिसका आप आज सामना कर रहे हैं।</value>
+  </data>
+  <data name="ChatbotHowAreYouReply" xml:space="preserve">
+    <value>मैं एक वर्चुअल असिस्टेंट हूँ और बहुत अच्छा कर रहा हूँ! मैं आपकी शिकायत में आपकी कैसे मदद कर सकता हूँ?</value>
+  </data>
+  <data name="ChatbotTechnicalReply" xml:space="preserve">
+    <value>यह एक &lt;b&gt;तकनीकी समस्या&lt;/b&gt; लगती है। कृपया अपनी शिकायत दर्ज करते समय इसे 'आईटी सहायता' विभाग के तहत उठाएं।</value>
+  </data>
+  <data name="ChatbotHostelReply" xml:space="preserve">
+    <value>कृपया इसे &lt;b&gt;हॉस्टल/सुविधा&lt;/b&gt; श्रेणी के अंतर्गत उठाएं।</value>
+  </data>
+  <data name="ChatbotAcademicReply" xml:space="preserve">
+    <value>मेरा सुझाव है कि इसे &lt;b&gt;शैक्षणिक प्रश्न&lt;/b&gt; श्रेणी के अंतर्गत उठाया जाए।</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>लॉगिन</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>पंजीकरण</value>
+  </data>
+</root>

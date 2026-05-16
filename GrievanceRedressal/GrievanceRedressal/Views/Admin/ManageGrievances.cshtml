@@ -1,0 +1,117 @@
+@model IEnumerable<GrievanceRedressal.Models.Grievance>
+@{
+    ViewData["Title"] = @Localizer["AdminManageTitle"];
+}
+
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 animate-fade-in-up">
+        <div>
+            <h2 class="fw-bold text-dark">@Localizer["ManageAllComplaints"]</h2>
+            <p class="text-muted">@Localizer["ManageSubtitle"]</p>
+        </div>
+        <div class="text-end">
+            @if (ViewBag.CurrentFilter != null)
+            {
+                <a asp-action="ManageGrievances" class="btn btn-sm btn-outline-secondary me-2"><i class="bi bi-x-circle me-1"></i> @Localizer["ClearFilter"]</a>
+            }
+            <span class="badge bg-primary p-2 px-3 shadow-sm animate-pulse">@Localizer["LiveUpdatesON"]</span>
+        </div>
+    </div>
+
+    <div class="row mb-4 animate-fade-in-up" style="animation-delay: 0.1s;">
+        <div class="col-md-4">
+            <a asp-action="ManageGrievances" asp-route-statusId="1" class="text-decoration-none text-dark">
+                <div class="card border-0 shadow-sm bg-white hover-lift p-3 border-start border-warning border-5 @(ViewBag.CurrentFilter == 1 ? "bg-light border-3 shadow" : "")">
+                    <h6 class="text-muted small fw-bold text-uppercase">@Localizer["NewComplaints"]</h6>
+                    <h3 class="mb-0 fw-bold">@ViewBag.NewCount</h3>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a asp-action="ManageGrievances" asp-route-statusId="2" class="text-decoration-none text-dark">
+                <div class="card border-0 shadow-sm bg-white hover-lift p-3 border-start border-primary border-5 @(ViewBag.CurrentFilter == 2 ? "bg-light border-3 shadow" : "")">
+                    <h6 class="text-muted small fw-bold text-uppercase">@Localizer["InProgress"]</h6>
+                    <h3 class="mb-0 fw-bold">@ViewBag.InProgressCount</h3>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a asp-action="ManageGrievances" asp-route-statusId="3" class="text-decoration-none text-dark">
+                <div class="card border-0 shadow-sm bg-white hover-lift p-3 border-start border-success border-5 @(ViewBag.CurrentFilter == 3 ? "bg-light border-3 shadow" : "")">
+                    <h6 class="text-muted small fw-bold text-uppercase">@Localizer["SolvedTotal"]</h6>
+                    <h3 class="mb-0 fw-bold">@ViewBag.ResolvedCount</h3>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow animate-fade-in-up" style="border-radius: 15px; animation-delay: 0.2s;">
+        <div class="card-header bg-dark text-white py-3" style="border-radius: 15px 15px 0 0;">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h5 class="mb-0"><i class="bi bi-list-stars me-2"></i> @Localizer["ComplaintRegistry"]</h5>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">@Localizer["TicketID"]</th>
+                            <th>@Localizer["IssueAndDescription"]</th>
+                            <th>@Localizer["Priority"]</th>
+                            <th>@Localizer["CurrentStatus"]</th>
+                            <th>@Localizer["Action"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var grievance in Model)
+                            {
+                                <tr class="hover-scale">
+                                    <td class="ps-4 fw-bold text-muted">#GR-@grievance.GrievanceId</td>
+                                    <td>
+                                        <div class="fw-bold">@grievance.Title</div>
+                                        <small class="text-muted text-truncate d-block" style="max-width: 200px;">@grievance.Description</small>
+                                        @if (!string.IsNullOrEmpty(grievance.AttachmentPath))
+                                        {
+                                            <a href="@grievance.AttachmentPath" target="_blank" class="badge bg-info text-decoration-none mt-1"><i class="bi bi-image me-1"></i> View Photo</a>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if(grievance.PriorityId == 1) { <span class="badge rounded-pill bg-info text-dark shadow-sm">@Localizer["Low"]</span> }
+                                        else if (grievance.PriorityId == 2) { <span class="badge rounded-pill bg-warning text-dark shadow-sm">@Localizer["Medium"]</span> }
+                                        else { <span class="badge rounded-pill bg-danger shadow-sm">@Localizer["High"]</span> }
+                                    </td>
+                                    <td>
+                                        @if(grievance.StatusId == 1) { <span class="badge bg-secondary animate-pulse">@Localizer["OpenStatus"]</span> }
+                                        else if (grievance.StatusId == 2) { <span class="badge bg-warning text-dark">@Localizer["InProgressStatus"]</span> }
+                                        else if (grievance.StatusId == 3) { <span class="badge bg-success">@Localizer["ResolvedStatus"]</span> }
+                                    </td>
+                                    <td>
+                                        <form asp-action="UpdateStatus" asp-controller="Admin" method="post" class="d-flex align-items-center">
+                                            <input type="hidden" name="grievanceId" value="@grievance.GrievanceId" />
+                                            <select name="newStatus" class="form-select form-select-sm me-2" style="width: auto;" required>
+                                                <option value="" disabled selected>@Localizer["UpdateOption"]</option>
+                                                <option value="2">@Localizer["InProgressStatus"]</option>
+                                                <option value="3">@Localizer["ResolveStatus"]</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-sm btn-outline-success hover-lift"><i class="bi bi-check-lg"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-white text-center py-3" style="border-radius: 0 0 15px 15px;">
+            <a href="#" class="btn btn-sm btn-link text-decoration-none">@Localizer["ViewAllRecords"] <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">

@@ -1,0 +1,213 @@
+@{
+    ViewData["Title"] = Localizer["RaiseNewGrievance"];
+}
+
+<style>
+    /* 1. Glass Form Container */
+    .glass-form-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 25px;
+        padding: 40px;
+        color: white;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
+
+    /* 2. Interactive Input Fields */
+    .glass-input {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: white !important;
+        border-radius: 12px !important;
+        padding: 12px 15px !important;
+    }
+
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-color: #0575E6 !important;
+            box-shadow: 0 0 15px rgba(5, 117, 230, 0.4) !important;
+        }
+
+    /* Style for dropdown options to fix visibility on dark theme */
+    .glass-input option {
+        background-color: #1a1c2c !important; /* Dark background for visibility */
+        color: white !important;
+        padding: 10px !important;
+    }
+
+    /* 3. Priority Slider */
+    .priority-slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 10px;
+        border-radius: 5px;
+        background: linear-gradient(to right, #00f2fe 0%, #0575E6 50%, #ff0844 100%);
+        outline: none;
+    }
+
+        .priority-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+    /* 4. Dropzone for Files */
+    .upload-zone {
+        border: 2px dashed rgba(255, 255, 255, 0.3);
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+        .upload-zone:hover {
+            border-color: #0575E6;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+    .header-style {
+        font-family: 'Righteous', sans-serif;
+        letter-spacing: 1px;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="glass-form-card shadow-lg">
+
+                <div class="text-center mb-5">
+                    <h2 class="header-style text-white"><i class="bi bi-megaphone-fill me-2 text-info"></i>@Localizer["RaiseNewGrievance"]</h2>
+                    <p class="text-white-50">@Localizer["RaiseSubtitle"]</p>
+                </div>
+
+                <form asp-action="SubmitGrievance" method="post" enctype="multipart/form-data">
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">@Localizer["ComplaintSubject"]</label>
+                        <input type="text" id="complaintSubject" name="complaintSubject" class="form-control glass-input" placeholder="@Localizer["SubjectPlaceholder"]" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label fw-bold">@Localizer["Category"] <span class="badge bg-success small d-none" id="aiTag">@Localizer["AutoDetected"] <i class="bi bi-magic"></i></span></label>
+                            <select id="categoryId" name="categoryId" class="form-select glass-input">
+                                <option value="1">@Localizer["TechnicalIssue"]</option>
+                                <option value="2">@Localizer["HostelFacility"]</option>
+                                <option value="3">@Localizer["AcademicQuery"]</option>
+                                <option value="4">@Localizer["Other"]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label fw-bold">@Localizer["Department"]</label>
+                            <select name="departmentId" class="form-select glass-input">
+                                <option value="1">@Localizer["ITSupport"]</option>
+                                <option value="2">@Localizer["Administration"]</option>
+                                <option value="3">@Localizer["Finance"]</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between">
+                            <label class="form-label fw-bold">@Localizer["PriorityLevel"]</label>
+                            <span id="priorityLabel" class="badge bg-warning text-dark">@Localizer["Medium"]</span>
+                        </div>
+                        <input type="range" name="priorityRange" class="priority-slider mt-2" min="1" max="3" step="1" value="2" id="priorityRange">
+                        <div class="d-flex justify-content-between mt-1 small opacity-75">
+                            <span>@Localizer["Low"]</span>
+                            <span>@Localizer["High"]</span>
+                            <span>@Localizer["Emergency"]</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">@Localizer["DetailedDescription"]</label>
+                        <textarea id="detailedDescription" name="detailedDescription" class="form-control glass-input" rows="4" placeholder="@Localizer["DescPlaceholder"]"></textarea>
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="form-label fw-bold">@Localizer["AttachmentsOptional"]</label>
+                        <div class="upload-zone" onclick="document.getElementById('fileInput').click()" id="uploadZone">
+                            <i class="bi bi-cloud-arrow-up fs-1 text-info" id="uploadIcon"></i>
+                            <p class="mb-0 mt-2" id="uploadStatus">@Localizer["UploadText"]</p>
+                            <input type="file" id="fileInput" name="attachment" class="d-none" onchange="updateUploadStatus(this)">
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="button" class="btn btn-outline-light rounded-pill px-4 me-2">@Localizer["Cancel"]</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow-lg">
+                            @Localizer["SubmitComplaint"] <i class="bi bi-send-fill ms-2"></i>
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Priority Label Logic
+        const range = document.getElementById('priorityRange');
+        const label = document.getElementById('priorityLabel');
+        const colors = { 1: 'bg-info', 2: 'bg-warning text-dark', 3: 'bg-danger' };
+        const texts = { 1: '@Localizer["Low"]', 2: '@Localizer["Medium"]', 3: '@Localizer["Emergency"]' };
+
+        range.addEventListener('input', (e) => {
+            const val = e.target.value;
+            label.innerText = texts[val];
+            label.className = `badge ${colors[val]}`;
+        });
+        // Auto-Categorization Logic
+        const subject = document.getElementById('complaintSubject');
+        const desc = document.getElementById('detailedDescription');
+        const catSelect = document.getElementById('categoryId');
+        const aiTag = document.getElementById('aiTag');
+
+        function prioritizeCategory() {
+            const text = (subject.value + " " + desc.value).toLowerCase();
+            let newCat = "4"; // Default 'Other'
+
+            if (text.includes('monitor') || text.includes('laptop') || text.includes('wifi') || text.includes('system') || text.includes('software')) {
+                newCat = "1"; // Technical Issue
+            } else if (text.includes('hostel') || text.includes('water') || text.includes('food') || text.includes('room') || text.includes('clean')) {
+                newCat = "2"; // Hostel
+            } else if (text.includes('fees') || text.includes('exam') || text.includes('teacher') || text.includes('scholarship')) {
+                newCat = "3"; // Academic
+            }
+
+            if(newCat !== "4" && catSelect.value !== newCat) {
+                catSelect.value = newCat;
+                aiTag.classList.remove('d-none'); // Show auto-detected badge
+            } else if(newCat === "4") {
+                aiTag.classList.add('d-none');
+            }
+        }
+
+        subject.addEventListener('keyup', prioritizeCategory);
+        desc.addEventListener('keyup', prioritizeCategory);
+
+        function updateUploadStatus(input) {
+            const status = document.getElementById('uploadStatus');
+            const icon = document.getElementById('uploadIcon');
+            const zone = document.getElementById('uploadZone');
+            if (input.files && input.files[0]) {
+                status.innerText = "File Selected: " + input.files[0].name;
+                status.classList.add('text-info', 'fw-bold');
+                icon.className = "bi bi-check-circle-fill fs-1 text-success";
+                zone.style.borderColor = "#198754";
+            }
+        }
+    </script>
+}

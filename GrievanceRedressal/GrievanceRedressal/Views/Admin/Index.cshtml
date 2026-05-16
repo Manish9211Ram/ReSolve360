@@ -1,0 +1,296 @@
+@model GrievanceRedressal.Models.DashboardCounts
+@{
+    ViewData["Title"] = Localizer["AdminDashboard"];
+    var recentGrievances = (IEnumerable<GrievanceRedressal.Models.Grievance>)ViewBag.RecentGrievances;
+}
+
+<style>
+    :root {
+        --glass-bg: rgba(255, 255, 255, 0.05);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --accent-blue: #00d2ff;
+        --accent-purple: #9d50bb;
+        --accent-green: #00f260;
+        --accent-red: #ff512f;
+    }
+
+    body {
+        background: radial-gradient(circle at top right, #1a1a2e, #16213e, #0f3460);
+        color: #e6e6e6;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .glass-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .hover-glow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);
+        border-color: rgba(0, 210, 255, 0.3);
+    }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .bg-blue-tint { background: rgba(0, 210, 255, 0.1); color: var(--accent-blue); }
+    .bg-purple-tint { background: rgba(157, 80, 187, 0.1); color: var(--accent-purple); }
+    .bg-green-tint { background: rgba(0, 242, 96, 0.1); color: var(--accent-green); }
+    .bg-red-tint { background: rgba(255, 81, 47, 0.1); color: var(--accent-red); }
+
+    .custom-table {
+        background: rgba(0, 0, 0, 0.2) !important;
+        border-radius: 15px !important;
+        overflow: hidden;
+    }
+
+    .custom-table th {
+        background: rgba(255, 255, 255, 0.03);
+        color: #aaa;
+        font-weight: 500;
+        letter-spacing: 1px;
+        border: none !important;
+        padding: 1.2rem !important;
+    }
+
+    .custom-table td {
+        background: transparent !important;
+        color: #e6e6e6;
+        vertical-align: middle;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        padding: 1.2rem !important;
+    }
+
+    .status-badge {
+        padding: 6px 16px;
+        border-radius: 30px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-open { background: rgba(0, 210, 255, 0.15); color: #00d2ff; border: 1px solid rgba(0, 210, 255, 0.3); }
+    .badge-progress { background: rgba(157, 80, 187, 0.15); color: #9d50bb; border: 1px solid rgba(157, 80, 187, 0.3); }
+    .badge-resolved { background: rgba(0, 242, 96, 0.15); color: #00f260; border: 1px solid rgba(0, 242, 96, 0.3); }
+
+    .action-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+        background: var(--accent-blue);
+        border-color: var(--accent-blue);
+        color: #1a1a2e;
+    }
+</style>
+
+<div class="container-fluid px-4 py-3">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5 mt-4">
+        <div>
+            <h1 class="fw-bold mb-0" style="letter-spacing: -1px; background: linear-gradient(to right, #00d2ff, #3a7bd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                @Localizer["AnalyticsTitle"]
+            </h1>
+            <p class="text-white-50 small mb-0">@Localizer["AnalyticsSubtitle"]</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="GenerateDetailedReport" class="btn btn-info rounded-pill px-4 text-white shadow-lg"><i class="bi bi-file-earmark-pdf me-1"></i> @Localizer["GenerateReportPDF"]</a>
+        </div>
+    </div>
+
+    <!-- Counters -->
+    <div class="row g-4 mb-5">
+        <div class="col-xl-3 col-md-6">
+            <a asp-action="ManageGrievances" class="text-decoration-none h-100 d-block">
+                <div class="card glass-card shadow-lg p-4 hover-glow h-100 border-start border-info border-5">
+                    <div class="stat-icon bg-blue-tint"><i class="bi bi-stack"></i></div>
+                    <h6 class="text-white-50 text-uppercase small ls-1">@Localizer["TotalRequests"]</h6>
+                    <div class="d-flex align-items-end">
+                        <h2 class="fw-bold mb-0 me-2">@(Model?.TotalGrievances.ToString("D2") ?? "00")</h2>
+                        <span class="text-info small pb-1"><i class="bi bi-arrow-up-circle me-1"></i> @Localizer["LiveStatus"]</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <a asp-action="ManageGrievances" asp-route-statusId="2" class="text-decoration-none h-100 d-block">
+                <div class="card glass-card shadow-lg p-4 hover-glow h-100 border-start border-warning border-5">
+                    <div class="stat-icon bg-purple-tint"><i class="bi bi-gear-wide-connected"></i></div>
+                    <h6 class="text-white-50 text-uppercase small ls-1">@Localizer["InProgress"]</h6>
+                    <div class="d-flex align-items-end">
+                        <h2 class="fw-bold mb-0 me-2">@(Model?.InProgressCount.ToString("D2") ?? "00")</h2>
+                        <span class="text-warning small pb-1"><i class="bi bi-clock-history me-1"></i> @Localizer["ActiveStatus"]</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <a asp-action="ManageGrievances" asp-route-statusId="3" class="text-decoration-none h-100 d-block">
+                <div class="card glass-card shadow-lg p-4 hover-glow h-100 border-start border-success border-5">
+                    <div class="stat-icon bg-green-tint"><i class="bi bi-check2-circle"></i></div>
+                    <h6 class="text-white-50 text-uppercase small ls-1">@Localizer["Resolved"]</h6>
+                    <div class="d-flex align-items-end">
+                        <h2 class="fw-bold mb-0 me-2">@(Model?.ResolvedCount.ToString("D2") ?? "00")</h2>
+                        <span class="text-success small pb-1"><i class="bi bi-stars me-1"></i> @Localizer["SuccessStatus"]</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <a asp-action="ManageGrievances" asp-route-statusId="1" class="text-decoration-none h-100 d-block">
+                <div class="card glass-card shadow-lg p-4 hover-glow h-100 border-start border-danger border-5">
+                    <div class="stat-icon bg-red-tint"><i class="bi bi-lightning-charge"></i></div>
+                    <h6 class="text-white-50 text-uppercase small ls-1">@Localizer["OpenIssuesCount"]</h6>
+                    <div class="d-flex align-items-end">
+                        <h2 class="fw-bold mb-0 me-2">@(Model?.OpenCount.ToString("D2") ?? "00")</h2>
+                        <span class="text-danger small pb-1"><i class="bi bi-fire me-1"></i> @Localizer["ImmediateStatus"]</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Main Table -->
+        <div class="col-lg-8">
+            <div class="card glass-card shadow-lg border-0 h-100 p-0 overflow-hidden">
+                <div class="card-header bg-transparent border-white border-opacity-10 py-4 px-4 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-journal-text me-2 text-info"></i> @Localizer["RecentComplaints"]</h5>
+                    <a asp-action="ManageGrievances" class="btn btn-outline-light btn-sm rounded-pill px-3 opacity-75">@Localizer["ViewAll"]</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table custom-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>@Localizer["TicketID"]</th>
+                                    <th>@Localizer["Subject"]</th>
+                                    <th>@Localizer["Status"]</th>
+                                    <th>@Localizer["Date"]</th>
+                                    <th class="text-center">@Localizer["Action"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var g in recentGrievances)
+                                {
+                                    <tr>
+                                        <td class="fw-bold text-info">#GR-@g.GrievanceId</td>
+                                        <td>
+                                            <div class="fw-semibold">@g.Title</div>
+                                            <div class="small opacity-50">@g.Description.Substring(0, Math.Min(30, g.Description.Length))...</div>
+                                        </td>
+                                        <td>
+                                            <span class="status-badge @(g.StatusId == 1 ? "badge-open" : g.StatusId == 2 ? "badge-progress" : "badge-resolved")">
+                                                @(g.StatusId == 1 ? Localizer["OpenStatus"] : g.StatusId == 2 ? Localizer["InProgressStatus"] : Localizer["ResolvedStatus"])
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="small">@g.CreatedAt.ToString("dd MMM yyyy")</div>
+                                        </td>
+                                        <td class="text-center">
+                                            <a asp-action="ManageGrievances" asp-route-statusId="@g.StatusId" class="action-btn text-decoration-none">
+                                                <i class="bi bi-eye"></i> @Localizer["Manage"]
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                                @if(!recentGrievances.Any())
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center py-5 text-white-50">@Localizer["NoComplaintsFound"]</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Panel -->
+        <div class="col-lg-4">
+            <div class="card glass-card shadow-lg p-4 h-100 border-0" style="background: linear-gradient(135deg, rgba(30, 30, 47, 0.8) 0%, rgba(37, 41, 62, 0.8) 100%);">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="rounded-circle bg-info bg-opacity-25 p-3 me-3">
+                        <i class="bi bi-cpu-fill fs-3 text-info animate-pulse"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0 text-white">@Localizer["AiInsightsTitle"]</h5>
+                        <small class="text-white opacity-50">@Localizer["AiInsightsSubtitle"]</small>
+                    </div>
+                </div>
+
+                <div class="trend-list mt-2">
+                    @foreach (var trend in (IEnumerable<dynamic>)ViewBag.Trends)
+                    {
+                        <div class="p-3 rounded mb-3 glass-card border-white border-opacity-10 hover-lift">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <div class="text-uppercase small ls-1 text-white opacity-50" style="font-size: 0.65rem;">@(trend.Category == "Technical" ? Localizer["Technical"] : trend.Category == "Hostel" ? Localizer["Hostel"] : trend.Category == "Academic" ? Localizer["Academic"] : Localizer["SecurityCategory"])</div>
+                                    <h6 class="fw-bold mb-0 text-white">@(trend.StatusText.Contains("Rising") ? Localizer["RisingTrend"] : Localizer["DecliningTrend"])</h6>
+                                </div>
+                                <span class="badge rounded-pill @(trend.PredictedCount > trend.CurrentCount ? "bg-danger" : "bg-success") bg-opacity-75">
+                                    <i class="bi @(trend.PredictedCount > trend.CurrentCount ? "bi-arrow-up-right" : "bi-arrow-down-right")"></i>
+                                </span>
+                            </div>
+                            <div class="progress mb-2" style="height: 4px; background: rgba(255,255,255,0.05);">
+                                <div class="progress-bar @(trend.PredictedCount > trend.CurrentCount ? "bg-danger shadow-glow-red" : "bg-success shadow-glow-green")" 
+                                     role="progressbar" style="width: @(Math.Min(100, (trend.PredictedCount * 100) / (trend.CurrentCount + 1)))%;"></div>
+                            </div>
+                            <div class="d-flex justify-content-between small text-white opacity-75">
+                                <span>@Localizer["Current"]: @trend.CurrentCount</span>
+                                <span>@Localizer["Forecast"]: @trend.PredictedCount</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="mt-auto pt-4 border-top border-white border-opacity-10 text-center">
+                    <p class="small text-white-50 mb-3"><i class="bi bi-shield-check me-1"></i> @Localizer["DataDrivenModel"]</p>
+                    <canvas id="statusChart" class="mx-auto" style="height:150px; width:150px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Simplified Status Pie Chart for AI Panel
+    const ctx2 = document.getElementById('statusChart').getContext('2d');
+    new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: ['@Localizer["ResolvedStatus"]', '@Localizer["OpenStatus"]', '@Localizer["InProgressStatus"]'],
+            datasets: [{
+                data: [@(ViewBag.ResolvedCount ?? 7), @(ViewBag.OpenCount ?? 2), @(ViewBag.InProgressCount ?? 4)],
+                backgroundColor: ['#00f260', '#ff512f', '#9d50bb'],
+                borderWidth: 0,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            cutout: '80%',
+            plugins: { legend: { display: false } }
+        }
+    });
+</script>

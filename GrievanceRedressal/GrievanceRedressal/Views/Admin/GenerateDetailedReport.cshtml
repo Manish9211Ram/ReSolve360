@@ -1,0 +1,120 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<GrievanceRedressal.Models.Grievance>
+@{
+    Layout = null; 
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture.Name;
+}
+
+<!DOCTYPE html>
+<html lang="@currentCulture">
+<head>
+    <meta charset="utf-8" />
+    <title>Resolve360 - @Localizer["DetailedAnalysisReport"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Oriya:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        @@media print {
+            .no-print { display: none !important; }
+            body { margin: 0; padding: 20px; }
+            .card { border: 1px solid #ddd !important; box-shadow: none !important; }
+        }
+        body { 
+            background: #f8f9fa; 
+            font-family: 'Inter', 'Noto Sans Devanagari', 'Noto Sans Oriya', sans-serif;
+        }
+        .report-header { background: #0d6efd; color: white; padding: 40px 0; margin-bottom: 30px; border-radius: 0 0 30px 30px; }
+        .stat-card { border-radius: 15px; border: none; transition: transform 0.2s; }
+        .table-responsive { border-radius: 15px; overflow: hidden; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header-style { font-family: 'Righteous', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="no-print bg-dark py-2 text-center text-white">
+        <button class="btn btn-primary btn-sm me-2" onclick="window.print()"><i class="bi bi-printer me-2"></i> @Localizer["PrintOrSaveAsPDF"]</button>
+        <a class="btn btn-outline-light btn-sm" href="/Admin/Index"><i class="bi bi-arrow-left me-2"></i> @Localizer["BackToDashboard"]</a>
+    </div>
+
+    <div class="report-header shadow">
+        <div class="container text-center">
+            <h1 class="fw-bold"><i class="bi bi-shield-check me-3"></i> Resolve360 @Localizer["MonthlyAnalysis"]</h1>
+            <p class="opacity-75">Resolve360 - @Localizer["DetailedReportAsOf"] @DateTime.Now.ToString("D", System.Globalization.CultureInfo.CurrentCulture)</p>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="fw-bold mb-4"><i class="bi bi-calendar-range me-2 text-primary"></i> @Localizer["MonthWiseSummary"]</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle mb-0 text-center">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>@Localizer["Month"]</th>
+                                <th>@Localizer["TotalComplaints"]</th>
+                                <th>@Localizer["SolvedResolved"]</th>
+                                <th>@Localizer["InProgress"]</th>
+                                <th>@Localizer["PendingOpen"]</th>
+                                <th>@Localizer["ResolutionRate"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var month in ViewBag.MonthlyData)
+                            {
+                                <tr>
+                                    <td class="fw-bold">@month.Month</td>
+                                    <td>@month.Total</td>
+                                    <td class="text-success fw-bold">@month.Resolved</td>
+                                    <td class="text-primary">@month.InProgress</td>
+                                    <td class="text-danger">@month.Open</td>
+                                    <td>
+                                        @{
+                                            var rate = month.Total > 0 ? (double)month.Resolved / month.Total * 100 : 0;
+                                        }
+                                        <div class="progress" style="height: 10px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: @rate.ToString("0")%" aria-valuenow="@rate" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <small class="fw-bold">@rate.ToString("0.0")%</small>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h4 class="fw-bold mb-4"><i class="bi bi-card-checklist me-2 text-success"></i> @Localizer["ResolutionInsights"]</h4>
+                <p class="text-muted">@Localizer["DetailedResolutionLog"]</p>
+                @foreach (var g in Model.Where(x => x.StatusId == 3).OrderByDescending(x => x.CreatedAt))
+                {
+                    <div class="card mb-3 stat-card shadow-sm border-start border-5 border-success p-3">
+                        <div class="row">
+                            <div class="col-md-2 text-muted fw-bold">#GR-@g.GrievanceId</div>
+                            <div class="col-md-7">
+                                <h6 class="fw-bold mb-1">@g.Title</h6>
+                                <p class="small text-muted mb-0">@g.Description</p>
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <span class="badge bg-light text-dark border"><i class="bi bi-clock me-1"></i> @g.CreatedAt.ToString("MMM dd")</span>
+                                <div class="mt-2 text-success small fw-bold"><i class="bi bi-check-all me-1"></i> @Localizer["Resolved"]</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        
+        <div class="text-center mt-5 text-muted small p-4 border-top">
+            <p>@Localizer["AutoGeneratedFooter"]</p>
+            <p>&copy; @DateTime.Now.Year - Resolve360 Dashboard</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

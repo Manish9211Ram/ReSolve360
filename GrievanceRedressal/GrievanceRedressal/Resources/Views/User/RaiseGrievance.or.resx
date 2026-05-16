@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="RaiseNewGrievance" xml:space="preserve">
+    <value>ନୂତନ ଅଭିଯୋଗ ଦାଖଲ କରନ୍ତୁ</value>
+  </data>
+  <data name="RaiseSubtitle" xml:space="preserve">
+    <value>ଆପଣଙ୍କର ସମସ୍ୟା ଜଣାନ୍ତୁ, ଆମେ ସମାଧାନ ବାହାର କରିବୁ |</value>
+  </data>
+  <data name="ComplaintSubject" xml:space="preserve">
+    <value>ଅଭିଯୋଗର ବିଷୟ</value>
+  </data>
+  <data name="SubjectPlaceholder" xml:space="preserve">
+    <value>ଯଥା: ଲ୍ୟାବ ୨ ରେ ୱାଇ-ଫାଇ କାମ କରୁନାହିଁ</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>ଶ୍ରେଣୀ</value>
+  </data>
+  <data name="AutoDetected" xml:space="preserve">
+    <value>ସ୍ୱୟଂଚାଳିତ ଚିହ୍ନଟ</value>
+  </data>
+  <data name="TechnicalIssue" xml:space="preserve">
+    <value>ତୈଷୟିକ ସମସ୍ୟା</value>
+  </data>
+  <data name="HostelFacility" xml:space="preserve">
+    <value>ହଷ୍ଟେଲ୍/ସୁବିଧା</value>
+  </data>
+  <data name="AcademicQuery" xml:space="preserve">
+    <value>ଶିକ୍ଷାଗତ ପ୍ରଶ୍ନ</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>ଅନ୍ୟ</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>ବିଭାଗ</value>
+  </data>
+  <data name="ITSupport" xml:space="preserve">
+    <value>ଆଇଟି ସହାୟତା</value>
+  </data>
+  <data name="Administration" xml:space="preserve">
+    <value>ପ୍ରଶାସନ</value>
+  </data>
+  <data name="Finance" xml:space="preserve">
+    <value>ଅର୍ଥ</value>
+  </data>
+  <data name="PriorityLevel" xml:space="preserve">
+    <value>ପ୍ରାଥମିକତା ସ୍ତର</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>କମ୍</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>ମଧ୍ୟମ</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>ଉଚ୍ଚ</value>
+  </data>
+  <data name="Emergency" xml:space="preserve">
+    <value>ଜରୁରୀକାଳୀନ</value>
+  </data>
+  <data name="DetailedDescription" xml:space="preserve">
+    <value>ବିସ୍ତୃତ ବିବରଣୀ</value>
+  </data>
+  <data name="DescPlaceholder" xml:space="preserve">
+    <value>ଆପଣଙ୍କର ସମସ୍ୟା ବିସ୍ତୃତ ଭାବରେ ବର୍ଣ୍ଣନା କରନ୍ତୁ ...</value>
+  </data>
+  <data name="AttachmentsOptional" xml:space="preserve">
+    <value>ସଂଲଗ୍ନକ (ବୈକଳ୍ପିକ)</value>
+  </data>
+  <data name="UploadText" xml:space="preserve">
+    <value>ସ୍କ୍ରିନସଟ୍ ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ କିମ୍ବା ଡ୍ରାଗ୍ ଏବଂ ଡ୍ରପ୍ କରନ୍ତୁ</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>ବାତିଲ୍ କରନ୍ତୁ</value>
+  </data>
+  <data name="SubmitComplaint" xml:space="preserve">
+    <value>ଅଭିଯୋଗ ଦାଖଲ କରନ୍ତୁ</value>
+  </data>
+</root>
